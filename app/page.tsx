@@ -20,7 +20,7 @@ export default function Home() {
     setError(null)
     setTranscript(null)
 
-    // Placeholder logic — we’ll replace this with a real API call in Step 5
+    // Placeholder for Step 5
     setTimeout(() => {
       setTranscript('[Transcript placeholder]')
       setLoading(false)
@@ -28,29 +28,40 @@ export default function Home() {
   }
 
   return (
-    <main>
-      <h1>mp3-to-text</h1>
-      <p>Upload your .mp3 and get the transcript back.</p>
+    <main className="max-w-xl mx-auto p-6 text-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold mb-2">MP3 to Text</h1>
+      <p className="mb-6 text-gray-700 dark:text-gray-300">
+        Upload your .mp3 and get the transcript back.
+      </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <input
             type="file"
             accept=".mp3,audio/mpeg"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="block w-full text-sm text-gray-800 dark:text-gray-100 file:mr-4 file:py-2 file:px-4 file:border file:border-gray-300 dark:file:border-gray-600 file:rounded file:bg-white dark:file:bg-gray-800 file:text-sm file:cursor-pointer"
           />
         </div>
         <div>
-          <button type="submit" disabled={!file || loading}>
-            {loading ? 'Uploading...' : 'Upload'}
-          </button>
+        <button
+          type="submit"
+          disabled={!file || loading}
+          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? 'Uploading...' : 'Upload'}
+        </button>
+
         </div>
       </form>
 
-      {error && <p>{error}</p>}
+      {error && <p className="mt-4 text-red-600 dark:text-red-400">{error}</p>}
+
       {transcript && (
-        <div>
-          <p>{transcript}</p>
+        <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded">
+          <p className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-100">
+            {transcript}
+          </p>
         </div>
       )}
     </main>
