@@ -1,11 +1,58 @@
+'use client'
+
+import { useState } from 'react'
+
 export default function Home() {
+  const [file, setFile] = useState<File | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [transcript, setTranscript] = useState<string | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!file) {
+      setError('Please select an MP3 file.')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+    setTranscript(null)
+
+    // Placeholder logic — we’ll replace this with a real API call in Step 5
+    setTimeout(() => {
+      setTranscript('[Transcript placeholder]')
+      setLoading(false)
+    }, 1000)
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <h1>MP3 to Text</h1>
-        <p>Upload an MP3 and get an instant transcript using OpenAI Whisper. A simple Next.js app that turns podcasts into plain text.
-        </p>
-      </main>
-    </div>
-  );
+    <main>
+      <h1>mp3-to-text</h1>
+      <p>Upload your .mp3 and get the transcript back.</p>
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="file"
+            accept=".mp3,audio/mpeg"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
+        </div>
+        <div>
+          <button type="submit" disabled={!file || loading}>
+            {loading ? 'Uploading...' : 'Upload'}
+          </button>
+        </div>
+      </form>
+
+      {error && <p>{error}</p>}
+      {transcript && (
+        <div>
+          <p>{transcript}</p>
+        </div>
+      )}
+    </main>
+  )
 }
