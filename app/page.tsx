@@ -20,11 +20,28 @@ export default function Home() {
     setError(null)
     setTranscript(null)
 
-    // Placeholder for Step 5
-    setTimeout(() => {
-      setTranscript('[Transcript placeholder]')
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await fetch('/api/transcribe', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Transcription failed')
+      }
+
+      setTranscript(result.transcript)
+    } catch (err: any) {
+      console.error(err)
+      setError(err.message || 'Something went wrong')
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -44,14 +61,13 @@ export default function Home() {
           />
         </div>
         <div>
-        <button
-          type="submit"
-          disabled={!file || loading}
-          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? 'Uploading...' : 'Upload'}
-        </button>
-
+          <button
+            type="submit"
+            disabled={!file || loading}
+            className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? 'Uploading...' : 'Upload'}
+          </button>
         </div>
       </form>
 
