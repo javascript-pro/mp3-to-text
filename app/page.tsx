@@ -31,7 +31,7 @@ export default function Home() {
     <main className="max-w-xl mx-auto p-6 text-gray-900 dark:text-gray-100">
       <h1 className="text-3xl font-bold mb-2">MP3 to Text</h1>
       <p className="mb-6 text-gray-700 dark:text-gray-300">
-        Upload your .mp3 and get the transcript back.
+        Upload an .mp3 and get a transcript back
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
